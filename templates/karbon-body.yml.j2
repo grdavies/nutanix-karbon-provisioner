@@ -3,7 +3,7 @@
         "node_cidr_mask_size": {{ node_cidr_mask_size }},
         "service_ipv4_cidr": "{{ service_ipv4_cidr }}",
         "pod_ipv4_cidr": "{{ pod_ipv4_cidr }}",
-        "flannel_config": {}
+        "flannel_config": {},
     },
     "etcd_config": {
         "node_pools": [
@@ -16,17 +16,17 @@
                     "disk_mib": {{ etcd_disk_mib }},
                     "memory_mib": {{ etcd_memory_mib }},
                     "network_uuid": "{{ subnet_uuid }}",
-                    "prism_element_cluster_uuid": "{{ cluster_uuid }}"
+                    "prism_element_cluster_uuid": "{{ cluster_uuid }}",
                 }
             }
         ]
     },
     "masters_config": {
-      {% if dev_cluster = "yes" %}
+      {% if dev_cluster == "yes" %}
         "single_master_config": {},
       {% else %}
         "active_passive_config": {
-          "external_ipv4_address": "{{ karbon_prod_cluster_ip }}"
+          "external_ipv4_address": "{{ karbon_prod_cluster_ip }}",
       },
       {% endif %}
         "node_pools": [
@@ -39,13 +39,13 @@
                     "disk_mib": {{ master_disk_mib }},
                     "memory_mib": {{ master_memory_mib }},
                     "network_uuid": "{{ subnet_uuid }}",
-                    "prism_element_cluster_uuid": "{{ cluster_uuid }}"
+                    "prism_element_cluster_uuid": "{{ cluster_uuid }}",
                 }
             }
         ]
     },
     "metadata": {
-        "api_version": "v1.0.0"
+        "api_version": "v1.0.0",
     },
     "name": "{{ karbon_cluster_name}}",
     "storage_class_config": {
@@ -58,9 +58,9 @@
             "prism_element_cluster_uuid": "{{ cluster_uuid }}",
             "file_system": "ext4",
             {% if flash_mode == "yes" %}
-            "flash_mode": true
+            "flash_mode": true,
             {% else %}
-            "flash_mode": false
+            "flash_mode": false,
             {% endif %}
         }
     },

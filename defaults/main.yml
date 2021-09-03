@@ -10,6 +10,7 @@ prism_central_ip: 192.168.1.8
 prism_central_api_url_v3: "https://{{ prism_central_ip }}:9440/api/nutanix/v3"
 prism_user: admin
 prism_password: "<You password here>"
+validate_certs: no
 
 # Global Karbon Settings
 cluster_type: dev # or prod

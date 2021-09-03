@@ -22,7 +22,7 @@
         ]
     },
     "masters_config": {
-      {% if dev_cluster == "yes" %}
+      {% if cluster_type == "dev" %}
         "single_master_config": {},
       {% else %}
         "active_passive_config": {

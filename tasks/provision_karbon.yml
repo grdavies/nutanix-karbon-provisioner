@@ -1,6 +1,6 @@
 ---
 # debug vars
-- name Debug | Print Karbon cluster definition
+- name: Debug | Print Karbon cluster definition
   debug:
     msg: |
       karbon_name = {{ karbon_name }}

@@ -5,6 +5,8 @@
 - import_tasks: get_cluster_uuids.yml
 - import_tasks: get_subnet_uuids.yml
 - import_tasks: get_karbon_cluster_uuids.yml
+- import_tasks: check_karbon_unique.yml
 - import_tasks: define_uuids_from_names.yml
+  when: not karbon_cluster_exists
 - import_tasks: provision_karbon.yml
   when: not karbon_cluster_exists

@@ -4,8 +4,9 @@
 # Control debug
 global_debug: false
 
-# Wait for provisioning to complete
+# Control provisioning
 wait: true
+karbon_cluster_exists: false
 
 # Nutanix Cluster Settings
 api_version: "3"

@@ -24,17 +24,10 @@
   when: global_debug
 
 
-# create template
-- name: Create fact with Karbon template contents
-  set_fact:
-    vm_body: "{{ lookup('template', 'karbon-body.yml.j2') | from_yaml }}"
-  register: template
-
-
 # debug template
 - name: Debug | Print Template lookup result
   debug:
-    msg: "{{ template.ansible_facts.karbon_body }}"
+    msg: "{{ lookup('template', 'karbon-body.yml.j2') | from_yaml }}"
   when: global_debug
 
 
@@ -42,8 +35,7 @@
 - name: Create a Karbon cluster from template
   uri:
     url: "{{ prism_central_api_url_v3 }}/karbon/v1/k8s/clusters"
-    body:
-      "{{ template.ansible_facts.karbon_body }}"
+    body: "{{ lookup('template', 'karbon-body.yml.j2') | from_yaml }}"
     method: POST
     validate_certs: "{{ validate_certs }}"
     body_format: json

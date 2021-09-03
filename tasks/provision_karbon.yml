@@ -55,7 +55,7 @@
 # wait for task to complete
 - name: Monitor status of Karbon deployment
   uri:
-    url: "{{ prism_central_karbon_api }}/v1-alpha.1/k8s/clusters/{{ karbon_cluster_name }}/tasks/{{ json_create_result.json.task_id }}"
+    url: "{{ prism_central_karbon_api }}/v1-alpha.1/k8s/clusters/{{ karbon_cluster_name }}/tasks/{{ json_create_result.json.task_uuid }}"
     method: get
     status_code: 200
   register: karbon_create_status

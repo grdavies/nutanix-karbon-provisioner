@@ -3,7 +3,7 @@
 
 - name: Auth to the cluster
   uri:
-    url: "{{ prism_central_api_url_v3 }}/clusters/list"
+    url: "{{ prism_central_api_v3 }}/clusters/list"
     body:
       kind: cluster
       sort_order: ASCENDING

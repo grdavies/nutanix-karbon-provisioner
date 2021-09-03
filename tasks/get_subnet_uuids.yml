@@ -9,7 +9,7 @@
 
 - name: Get Subnet List
   uri:
-    url: "{{ prism_central_api_url_v3 }}/subnets/list"
+    url: "{{ prism_central_api_v3 }}/subnets/list"
     body:
       length: 100
       offset: 0

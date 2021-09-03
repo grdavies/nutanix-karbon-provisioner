@@ -34,7 +34,7 @@
 # post template to api
 - name: Create a Karbon cluster from template
   uri:
-    url: "{{ prism_central_api_url_v3 }}/karbon/v1/k8s/clusters"
+    url: "{{ prism_central_karbon_api }}/v1/k8s/clusters"
     body: "{{ lookup('template', 'karbon-body.yml.j2') | from_yaml }}"
     method: POST
     validate_certs: "{{ validate_certs }}"
@@ -55,7 +55,7 @@
 # wait for task to complete
 - name: Monitor status of Karbon deployment
   uri:
-    url: "{{ prism_central_api_url_v3 }}/karbon/v1-alpha.1/k8s/clusters/{{ karbon_cluster_name }}/tasks/{{ json_create_result.task_id }}"
+    url: "{{ prism_central_karbon_api }}/v1-alpha.1/k8s/clusters/{{ karbon_cluster_name }}/tasks/{{ json_create_result.task_id }}"
     method: get
     status_code: 200
   register: karbon_create_status
@@ -69,7 +69,7 @@
 # get provisioned karbon cluster details
 - name: Get Karbon cluster info
   uri:
-    url: "{{ prism_central_api_url_v3 }}/karbon/v1/k8s/clusters/{{ karbon_cluster_name }}"
+    url: "{{ prism_central_karbon_api }}/v1/k8s/clusters/{{ karbon_cluster_name }}"
     method: GET
     validate_certs: "{{ validate_certs }}"
     headers:
@@ -88,7 +88,7 @@
 # get provisioned karbon cluster kubeconfig
 - name: Get provisioned Karbon cluster kubeconfig
   uri:
-    url: "{{ prism_central_api_url_v3 }}/karbon/v1/k8s/clusters/{{ karbon_cluster_name }}/kubeconfig"
+    url: "{{ prism_central_karbon_api }}/v1/k8s/clusters/{{ karbon_cluster_name }}/kubeconfig"
     method: GET
     validate_certs: "{{ validate_certs }}"
     headers:

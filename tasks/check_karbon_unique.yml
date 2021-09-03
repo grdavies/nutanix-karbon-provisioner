@@ -1,0 +1,11 @@
+---
+- name: Check whether Karbon cluster already exists
+  set_fact:
+    karbon_cluster_exists: true
+  when: "item['name'] == karbon_cluster_name"
+  loop: "{{ karbon_cluster_uuids }}"
+
+- name: "Karbon cluster named {{ karbon_cluster_name }} exists"
+  fail:
+    msg: "A Karbon cluster named {{ karbon_cluster_name }} is already present. Please check your inputs and try again."
+  when: karbon_cluster_exists

@@ -56,15 +56,24 @@
 - name: "Wait until {{ karbon_cluster_name }} deployment complete"
   uri:
     url: "{{ prism_central_karbon_api }}/v1-alpha.1/k8s/clusters/{{ karbon_cluster_name }}/tasks/{{ json_create_result.json.task_uuid }}"
-    method: get
+    method: GET
+    validate_certs: "{{ validate_certs }}"
     status_code: 200
   register: karbon_create_status
   until:
   - karbon_create_status.status == 200
   - ( karbon_create_status.json.percentage_complete == 100 and karbon_create_status.json.status == "kSucceeded" )
+  - ( karbon_create_status.json.status == "kFailed" )
   retries: 60
   delay: 30
   when: wait
+
+
+# debug template
+- name: Debug | Print Karbon cluster creation task result
+  debug:
+    msg: "{{ karbon_create_status.json.status }}"
+  when: global_debug
 
 
 # get provisioned karbon cluster details
@@ -77,14 +86,19 @@
       Cookie: "{{ session_cookie }}"
     status_code: 200
   register: karbon_cluster_info
-  when: wait
+  when: >
+    ( wait ) and
+    ( karbon_create_status.json.status == "kSucceeded" )
 
 
 # debug template
 - name: Debug | Print Karbon cluster info
   debug:
     msg: "{{ karbon_cluster_info }}"
-  when: global_debug
+  when: >
+    ( wait ) and
+    ( karbon_create_status.json.status == "kSucceeded" ) and
+    global_debug
 
 
 # get provisioned karbon cluster kubeconfig
@@ -97,11 +111,16 @@
       Cookie: "{{ session_cookie }}"
     status_code: 200
   register: karbon_cluster_kubeconfig
-  when: wait
+  when: >
+    ( wait ) and
+    ( karbon_create_status.json.status == "kSucceeded" )
 
 
 # debug template
 - name: Debug | Print Karbon cluster kubeconfig
   debug:
     msg: "{{ karbon_cluster_kubeconfig }}"
-  when: global_debug
+  when:  >
+    ( wait ) and
+    ( karbon_create_status.json.status == "kSucceeded" ) and
+    global_debug

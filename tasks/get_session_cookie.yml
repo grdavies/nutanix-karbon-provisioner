@@ -11,7 +11,7 @@
       length: 10
       sort_attribute: ''
     method: POST
-    validate_certs: no
+    validate_certs: "{{ validate_certs }}"
     force_basic_auth: yes
     body_format: json
     user: "{{ prism_user }}"

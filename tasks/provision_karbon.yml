@@ -2,12 +2,25 @@
 # debug vars
 - name Debug | Print Karbon cluster definition
   debug:
-    vars:
-      msg: |
-        Module Variables ("vars"):
-        --------------------------------
-        {{ vars | to_nice_json }}
-    msg: "{{ msg.split('\n') }}"
+    msg: |
+      karbon_name = {{ karbon_name }}
+      cluster_name = {{ cluster_name }}
+      cluster_uuid = {{ cluster_uuid }}
+      cluster_username = {{ cluster_username }}
+      cluster_password = {{ cluster_password }}
+      subnet_name = {{ subnet_name }}
+      subnet_uuid = {{ subnet_uuid }}
+      container_name = {{ container_name }}
+      cluster_type = {{ cluster_type }}
+      kubernetes_version = {{ kubernetes_version }}
+      service_ipv4_cidr = {{ service_ipv4_cidr }}
+      pod_ipv4_cidr = {{ pod_ipv4_cidr }}
+      node_cidr_mask_size = {{ node_cidr_mask_size }}
+      flash_mode = {{ flash_mode }}
+      karbon_image_version = {{ karbon_image_version }}
+      master = {{ master_count }} x [ {{ master_vcpu }} CPU, {{ master_memory_mib }} MB RAM, {{ master_disk_mib }} MB DISK ]
+      etcd = {{ etcd_count }} x [ {{ etcd_vcpu }} CPU, {{ etcd_memory_mib }} MB RAM, {{ etcd_disk_mib }} MB DISK ]
+      worker = {{ worker_count }} x [ {{ worker_vcpu }} CPU, {{ worker_memory_mib }} MB RAM, {{ worker_disk_mib }} MB DISK ]
   when: global_debug
 
 

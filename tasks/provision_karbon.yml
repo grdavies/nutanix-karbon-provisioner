@@ -55,15 +55,16 @@
 # wait for task to complete
 - name: Monitor status of Karbon deployment
   uri:
-    url: "{{ prism_central_karbon_api }}/v1-alpha.1/k8s/clusters/{{ karbon_cluster_name }}/tasks/{{ json_create_result.task_id }}"
+    url: "{{ prism_central_karbon_api }}/v1-alpha.1/k8s/clusters/{{ karbon_cluster_name }}/tasks/{{ json_create_result.json.task_id }}"
     method: get
     status_code: 200
   register: karbon_create_status
   until:
-  - karbon_create_status.status == 200
+  - karbon_create_status.json.status == 200
   - ( karbon_create_status.json.percentage_complete == 100 and karbon_create_status.json.status == "SUCCEEDED" )
   retries: 60
   delay: 30
+  when: wait
 
 
 # get provisioned karbon cluster details
@@ -76,6 +77,7 @@
       Cookie: "{{ session_cookie }}"
     status_code: 200
   register: karbon_cluster_info
+  when: wait
 
 
 # debug template
@@ -95,6 +97,7 @@
       Cookie: "{{ session_cookie }}"
     status_code: 200
   register: karbon_cluster_kubeconfig
+  when: wait
 
 
 # debug template

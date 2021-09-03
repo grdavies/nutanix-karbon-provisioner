@@ -7,7 +7,7 @@ global_debug: false
 # Control provisioning
 wait: true
 wait_interval_sec: 60
-wait_max_time_sec: 1800
+wait_num_retries: 30
 karbon_cluster_exists: false
 
 # Nutanix Cluster Settings

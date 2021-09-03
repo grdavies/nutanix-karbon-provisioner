@@ -65,7 +65,7 @@
   until:
   - karbon_create_status.status == 200
   - ( karbon_create_status.json.percentage_complete == 100 and karbon_create_status.json.status == "kSucceeded" ) or ( karbon_create_status.json.status == "kFailed" )
-  retries: "{{ wait_max_time_sec / wait_interval_sec }}"
+  retries: "{{ wait_num_retries }}"
   delay: "{{ wait_interval_sec }}"
   when: wait
 

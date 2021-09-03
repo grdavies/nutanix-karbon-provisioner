@@ -1,0 +1,32 @@
+---
+# defaults file for nutanix-karbon-provisioner
+
+# Control debug
+global_debug: false
+
+# Nutanix Cluster Settings
+api_version: "3.0"
+prism_central_ip: 192.168.1.8
+prism_central_api_url_v3: "https://{{ prism_central_ip }}:9440/api/nutanix/v3"
+prism_user: admin
+prism_password: "<You password here>"
+
+# Global Karbon Settings
+cluster_type: dev # or prod
+kubernetes_version: "1.19.8-0"
+service_ipv4_cidr: "172.19.0.0/16"
+pod_ipv4_cidr: "172.20.0.0/16"
+node_cidr_mask_size: 24
+flash_mode: no
+karbon_image_version: "ntnx-1.0"
+
+# Global Karbon VM Sizes
+master_vcpu: 2
+master_disk_mib: 122880
+master_memory_mib: 4096
+etcd_vcpu: 4
+etcd_disk_mib: 40960
+etcd_memory_mib: 8192
+worker_vcpu: 8
+worker_disk_mib: 122880
+worker_memory_mib: 8192

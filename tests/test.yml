@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - nutanix-karbon-provisioner
+  vars:
+    karbon_name: ""
+    subnet_name: ""
+    cluster_name: ""
+    cluster_username: ""
+    cluster_password: ""
+    container_name: ""
+    dev_cluster: # <- Override to True for Production deployment
+    worker_count: # <- Override for desired number of workers

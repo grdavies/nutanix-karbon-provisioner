@@ -1,0 +1,99 @@
+---
+# debug vars
+- name Debug | Print Karbon cluster definition
+  debug:
+    vars:
+      msg: |
+        Module Variables ("vars"):
+        --------------------------------
+        {{ vars | to_nice_json }}
+    msg: "{{ msg.split('\n') }}"
+  when: global_debug
+
+
+# create template
+- name: Create fact with Karbon template contents
+  set_fact:
+    vm_body: "{{ lookup('template', 'karbon-body.yml.j2') | from_yaml }}"
+  register: template
+
+
+# debug template
+- name: Debug | Print Template lookup result
+  debug:
+    msg: "{{ template.ansible_facts.karbon_body }}"
+  when: global_debug
+
+
+# post template to api
+- name: Create a Karbon cluster from template
+  uri:
+    url: "{{ prism_central_api_url_v3 }}/karbon/v1/k8s/clusters"
+    body:
+      "{{ template.ansible_facts.karbon_body }}"
+    method: POST
+    validate_certs: "{{ validate_certs }}"
+    body_format: json
+    headers:
+      Cookie: "{{ session_cookie }}"
+    status_code: 202
+  register: json_create_result
+
+
+# debug template
+- name: Debug | Print Karbon cluster creation result
+  debug:
+    msg: "{{ json_create_result }}"
+  when: global_debug
+
+
+# wait for task to complete
+  - name: "Monitor status of Karbon deployment"
+    uri:
+      url: "{{ prism_central_api_url_v3 }}/karbon/v1-alpha.1/k8s/clusters/{{ cluster_name }}/tasks/{{ json_create_result.task_id }}"
+      method: get
+      status_code: 200
+    register: karbon_create_status
+    until:
+      - karbon_create_status.status == 200
+      - ( karbon_create_status.json.percentage_complete == 100 and karbon_create_status.json.status == "SUCCEEDED" )
+    retries: 60
+    delay: 30
+
+
+# get provisioned karbon cluster details
+- name: Get Karbon cluster info
+  uri:
+    url: "{{ prism_central_api_url_v3 }}/karbon/v1/k8s/clusters/{{ cluster_name }}"
+    method: GET
+    validate_certs: "{{ validate_certs }}"
+    headers:
+      Cookie: "{{ session_cookie }}"
+    status_code: 200
+  register: karbon_cluster_info
+
+
+# debug template
+- name: Debug | Print Karbon cluster info
+  debug:
+    msg: "{{ karbon_cluster_info }}"
+  when: global_debug
+
+
+# get provisioned karbon cluster kubeconfig
+- name: Get provisioned Karbon cluster kubeconfig
+  uri:
+    url: "{{ prism_central_api_url_v3 }}/karbon/v1/k8s/clusters/{{ cluster_name }}/kubeconfig"
+    method: GET
+    validate_certs: "{{ validate_certs }}"
+    headers:
+      Cookie: "{{ session_cookie }}"
+    status_code: 200
+  register: karbon_cluster_kubeconfig
+
+
+# debug template
+- name: Debug | Print Karbon cluster kubeconfig
+  debug:
+    msg: "{{ karbon_cluster_kubeconfig }}"
+  when: global_debug

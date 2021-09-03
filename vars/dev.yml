@@ -1,0 +1,5 @@
+---
+# dev cluster vars file for nutanix-karbon-provisioner
+master_count: 1
+etcd_count: 1
+worker_count: 1

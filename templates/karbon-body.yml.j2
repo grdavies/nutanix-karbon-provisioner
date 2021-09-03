@@ -1,0 +1,84 @@
+{
+    "cni_config": {
+        "node_cidr_mask_size": {{ node_cidr_mask_size }},
+        "service_ipv4_cidr": "{{ service_ipv4_cidr }}",
+        "pod_ipv4_cidr": "{{ pod_ipv4_cidr }}",
+        "flannel_config": {}
+    },
+    "etcd_config": {
+        "node_pools": [
+            {
+                "name": "etcd_pool",
+                "node_os_version": "{{ karbon_image_version }}",
+                "num_instances": {{ etcd_count }},
+                "ahv_config": {
+                    "cpu": {{ etcd_vcpu }},
+                    "disk_mib": {{ etcd_disk_mib }},
+                    "memory_mib": {{ etcd_memory_mib }},
+                    "network_uuid": "{{ subnet_uuid }}",
+                    "prism_element_cluster_uuid": "{{ cluster_uuid }}"
+                }
+            }
+        ]
+    },
+    "masters_config": {
+      {% if dev_cluster = "yes" %}
+        "single_master_config": {},
+      {% else %}
+        "active_passive_config": {
+          "external_ipv4_address": "{{ karbon_prod_cluster_ip }}"
+      },
+      {% endif %}
+        "node_pools": [
+            {
+                "name": "master_pool",
+                "node_os_version": "{{ karbon_image_version }}",
+                "num_instances": {{ master_count }},
+                "ahv_config": {
+                    "cpu": {{ master_vcpu}},
+                    "disk_mib": {{ master_disk_mib }},
+                    "memory_mib": {{ master_memory_mib }},
+                    "network_uuid": "{{ subnet_uuid }}",
+                    "prism_element_cluster_uuid": "{{ cluster_uuid }}"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "api_version": "v1.0.0"
+    },
+    "name": "{{ karbon_cluster_name}}",
+    "storage_class_config": {
+        "default_storage_class": true,
+        "name": "default-storageclass",
+        "volumes_config": {
+            "username": "{{ cluster_username }}",
+            "password": "{{ cluster_password }}",
+            "storage_container": "{{ container_name }}",
+            "prism_element_cluster_uuid": "{{ cluster_uuid }}",
+            "file_system": "ext4",
+            {% if flash_mode == "yes" %}
+            "flash_mode": true
+            {% else %}
+            "flash_mode": false
+            {% endif %}
+        }
+    },
+    "version": "{{ kubernetes_version }}",
+    "workers_config": {
+        "node_pools": [
+            {
+                "name": "worker_pool",
+                "node_os_version": "{{ karbon_image_version }}",
+                "num_instances": {{ worker_count }},
+                "ahv_config": {
+                    "cpu": {{ worker_vcpu }},
+                    "disk_mib": {{ worker_disk_mib }},
+                    "memory_mib": {{ worker_memory_mib }},
+                    "network_uuid": "{{ subnet_uuid }}",
+                    "prism_element_cluster_uuid": "{{ cluster_uuid }}"
+                }
+            }
+        ]
+    }
+}

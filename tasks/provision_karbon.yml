@@ -95,7 +95,7 @@
 # debug template
 - name: Debug | Print Karbon cluster info
   debug:
-    msg: "{{ karbon_cluster_info }}"
+    msg: "{{ karbon_cluster_info.json }}"
   when: >
     ( wait ) and
     ( karbon_create_status.json.status == "kSucceeded" ) and
@@ -117,10 +117,15 @@
     ( karbon_create_status.json.status == "kSucceeded" )
 
 
+- name: Stash the Karbon cluster kubeconfig
+  set_fact:
+    karbon_kubeconfig: "{{ karbon_kubeconfig|default([]) + [ {'name': {{ karbon_cluster_name }}, 'kubeconfig': karbon_cluster_kubeconfig.json.kube_config } ] }}"
+
+
 # debug template
 - name: Debug | Print Karbon cluster kubeconfig
   debug:
-    msg: "{{ karbon_cluster_kubeconfig }}"
+    msg: "{{ karbon_cluster_kubeconfig.json.kube_config }}"
   when:  >
     ( wait ) and
     ( karbon_create_status.json.status == "kSucceeded" ) and

@@ -7,5 +7,5 @@
 
 - name: "Karbon cluster named {{ karbon_cluster_name }} exists"
   fail:
-    msg: "A Karbon cluster named {{ karbon_cluster_name }} is already present. Please check your inputs and try again."
+    msg: "A Karbon cluster named {{ karbon_cluster_name }} is already present. Please check the inputs and try again."
   when: karbon_cluster_exists
